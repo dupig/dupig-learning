@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>有人播放视频1，没人播放视频2</title>
+</head>
+<body id="webbody" background="http://iframedupig.oss-cn-beijing.aliyuncs.com/day.png">
+    <div id="video">
+        <video id="video_alpha" width="400" height=“300” src="http://iframedupig.oss-cn-beijing.aliyuncs.com/beesmall.mp4" autoplay="autoplay" loop="true">
+    </div>
+    <script src="https://web-device.oss-cn-hangzhou.aliyuncs.com/aliyun-iot-device-sdk.min.js"></script>
+    <script>
+        var VideoSrc01 = "http://iframedupig.oss-cn-beijing.aliyuncs.com/beesmall.mp4"
+        var VideoSrc02= "http://iframedupig.oss-cn-beijing.aliyuncs.com/%E6%BC%8F%E6%96%97-%E5%A4%A7%E4%BF%AF%E8%A7%86%EF%BC%88%E5%B7%B2%E8%BD%AC%E6%8D%A2%EF%BC%89.mp4"
+        var VideoSrc =VideoSrc01; //默认播放视频1
+        const device = aliyunIot.device({
+        productKey: 'a1wfgbyRqMx',//要改
+        deviceName: 'FoB0TdjQ2vWT3zrD443W',
+        deviceSecret: 'JWmn4i6jOxuL9r9H20KweRgIN2mH1j2l',
+        tls: true,
+        });
+        device.on('connect', () => {
+        console.log('connect successfully!');
+        device.serve('property/set', function(params) {
+            // 处理服务参数
+           if(params.Status == "1") 
+           {console.log("somebody passing!");
+            { if(video_alpha.getAttribute("src",2) == VideoSrc01) console.log("KeepPlayingSrc01!");
+               else 
+               {video_alpha.setAttribute("src",VideoSrc01);
+               console.log("changeVideotoSrc01!")}
+               webbody.setAttribute("background","http://iframedupig.oss-cn-beijing.aliyuncs.com/day.png");
+            }
+           }
+           else
+           {console.log("nobody passing!");
+            { if(video_alpha.getAttribute("src",2) == VideoSrc02) console.log("KeepPlayingSrc02!");
+               else 
+               {video_alpha.setAttribute("src",VideoSrc02);
+               console.log("changeVideotoSrc02!")}
+               webbody.setAttribute("background","http://iframedupig.oss-cn-beijing.aliyuncs.com/night.png");
+            }
+           } 
+          });
+        // if(device.getProperty("passing") == true)
+        //     { if(video_alpha.getAttribute("src",2) == VideoSrc01) ;
+        //         else video_alpha.setAttribute("src",VideoSrc01);
+        //         }
+        // else
+        //     { if(video_alpha.getAttribute("src",2) == VideoSrc02) ;
+        //         else video_alpha.setAttribute("src",VideoSrc02);
+        //         }
+  //监听设备属性变化——回调函数改video的src
+        });
+</script>
+</body>
+</html>
